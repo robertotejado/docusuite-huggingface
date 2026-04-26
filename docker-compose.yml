@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    # Construye la imagen usando el Dockerfile de la carpeta actual
+    build: .
+    image: robertroof/docusuite_hugging_face:latest
+    container_name: docusuite_app
+    ports:
+      - "7860:7860"
+    env_file:
+      - .env
+    environment:
+      - PORT=7860
+      # Esto sobreescribe lo que haya en el .env si fuera necesario
+      - PYTHONUNBUFFERED=1
+    restart: always
