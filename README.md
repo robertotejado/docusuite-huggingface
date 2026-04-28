@@ -52,7 +52,7 @@ Puedes ejecutar este proyecto fácilmente en tu máquina local gracias a Docker 
 
 ### 2. Clonar el repositorio
 ```bash
-git clone [https://github.com/robertotejado/docusuite-huggingface.git](https://github.com/robertotejado/docusuite-huggingface.git)
+git clone https://github.com/robertotejado/docusuite-huggingface.git
 cd docusuite-huggingface
 ```
 
