@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
     <h1>{% if doc_actual %}✏️ Editando: {{ doc_actual['titulo'] }}{% else %}📝 Redactar Nuevo Documento{% endif %}</h1>
-
+    
+      
     <form method="POST" action="{{ url_for('main.editor') }}" style="background: var(--sidebar-bg); padding: 20px; border-radius: 8px;" id="formularioDocumento">
         
         {% if doc_actual %}
@@ -91,14 +92,20 @@ function enviarSeguro() {
     <!--<script src="https://cdn.tiny.cloud/1/tsrsg1slvb6ev00jqizigk5fhdctocxsess5rzkwkz0q1ntv/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
   -->
     
-<script>
-        // CONFIGURACIÓN UNIFICADA DE TINYMCE
+  <script>
+        // CONFIGURACIÓN UNIFICADA DE TINYMCE PARA LA WEB
         tinymce.init({
-            selector: '#tinymce-editor', // ID correcto corregido
-            plugins: 'codesample image code table lists link media',
-            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | codesample code | bullist numlist | link image table',
+            selector: '#tinymce-editor',
             
-            // Configuración de Lenguajes para CodeSample
+            // Dimensiones
+            height: 600,
+            width: '100%',
+            resize: 'vertical', // Permitimos estirar solo hacia abajo
+            
+            // Evitamos saltos al calcular botones
+            toolbar_mode: 'wrap',
+            
+            // Configuración de Lenguajes
             codesample_languages: [
                 { text: 'Bash', value: 'bash' },
                 { text: 'Docker', value: 'docker' },
@@ -112,20 +119,26 @@ function enviarSeguro() {
                 { text: 'CSS', value: 'css' }
             ],
 
-            // Configuraciones de imagen y visual
             images_upload_url: "/upload_attachment",
             automatic_uploads: true,
             file_picker_types: 'image',
-            height: 600,
-            menubar: false,
+            
+            language: 'es',
+            language_url: 'https://cdn.jsdelivr.net/npm/tinymce-i18n/langs6/es.min.js',
+            
+            plugins: 'codesample advlist autolink lists link image charmap preview searchreplace visualblocks code fullscreen table wordcount media',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | codesample image table link code fullscreen',
+            
+            menubar: true,
             extended_valid_elements: 'pre[*],code[*]',
             
-            // Modo Oscuro Dinámico
+            promotion: false,
+            branding: false,
+            
             skin: (document.documentElement.getAttribute('data-theme') === 'dark' ? 'oxide-dark' : 'oxide'),
             content_css: (document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default')
         });
 
-        // Lógica para alternar Modo Claro/Oscuro
         function toggleTheme() {
             const html = document.documentElement;
             if (html.getAttribute('data-theme') === 'dark') {
@@ -133,30 +146,36 @@ function enviarSeguro() {
             } else {
                 html.setAttribute('data-theme', 'dark');
             }
-            // Recargar el editor para aplicar el nuevo tema (opcional)
             tinymce.remove('#tinymce-editor');
             location.reload(); 
         }
     </script>
+    
+    <!-- UN ÚNICO BLOQUE DE ESTILOS LIMPIO -->
+    <style>
+        /* EL HÉROE: Forzamos la barra de scroll vertical siempre visible en la página.
+           Al estar fija, abrir menús no hará que aparezca/desaparezca y empuje tu formulario */
+        html {
+            overflow-y: scroll !important;
+        }
+
+        /* Estilos estrictos para el contenedor principal del editor */
+        .tox-tinymce { 
+            width: 100% !important; 
+            box-sizing: border-box !important;
+            border-radius: 6px !important; 
+            margin-bottom: 15px;
+            /* Eliminamos el borde predeterminado para evitar cálculos extraños de ancho */
+            border: none !important;
+        }
+        
+        .tox-notifications-container { display: none !important; }
+    </style>
+
+    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-docker.min.js"></script>
-    
-  <!--  <script>
-      tinymce.init({
-        selector: '#tinymce-editor',
-        plugins: 'image code table lists link media',
-        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | code',
-        
-        images_upload_url: "{{ url_for('main.upload_attachment') }}",
-        automatic_uploads: true,
-        file_picker_types: 'image',
-        
-        height: 600,
-        menubar: false,
-        
-        skin: (document.documentElement.getAttribute('data-theme') === 'dark' ? 'oxide-dark' : 'oxide'),
-        content_css: (document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default')
-      });
-    </script> --> 
+ 
+
 {% endblock %}
