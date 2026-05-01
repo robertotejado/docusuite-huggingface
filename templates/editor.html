@@ -29,9 +29,10 @@
                value="{% if doc_actual %}{{ doc_actual['autor'] or '' }}{% endif %}"><br>
         
         <label>Contenido del Documento:</label><br>
-        <textarea id="tinymce-editor" name="contenido_texto" rows="20" style="width: 100%;"><textarea id="tinymce-editor" name="d" rows="20" style="width: 100%;">
+        <textarea id="tinymce-editor" name="contenido_texto" rows="20" style="width: 100%;">
 {% if doc_actual %}{{ doc_actual['contenido_texto'] | safe }}{% endif %}
         </textarea><br>
+        
         
       <button type="button" class="btn" onclick="enviarSeguro()" style="font-size: 16px; padding: 10px 20px;">
     {% if doc_actual %}Actualizar Documentación{% else %}Guardar Nueva Documentación{% endif %}
